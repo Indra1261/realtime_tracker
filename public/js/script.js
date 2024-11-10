@@ -43,7 +43,7 @@ socket.on("receive-location", (data) => {
     const { id,latitude, longitude } = data;
     console.log(id);
     
-    map.setView([latitude,longitude]);
+    map.setView([latitude, longitude], map.getZoom());
     if(markers[id])
     {
         markers[id].setLatLng([latitude,longitude]);
