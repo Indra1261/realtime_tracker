@@ -1,0 +1,38 @@
+# Ignore node_modules folder
+node_modules/
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore any build or output folders
+dist/
+build/
+
+# Ignore IDE and editor config files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.log
+
+# Ignore package lock files if you prefer not to include them in version control (optional)
+# Uncomment only if necessary
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
