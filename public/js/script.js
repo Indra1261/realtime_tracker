@@ -1,4 +1,4 @@
-const socket = io("https://realtime-tracker-beta.vercel.app/"); 
+const socket = io("realtimetracker-production.up.railway.app"); 
 console.log("hey");
 
 if (navigator.geolocation) {
