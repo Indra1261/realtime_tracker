@@ -29,39 +29,29 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "indra's map"
 }).addTo(map);
 
-// Optionally, add a marker on the map if you want to display the user's location
-// socket.on("location-update", (location) => {
-//     const { latitude, longitude } = location;
-//     L.marker([latitude, longitude]).addTo(map)
-//         .bindPopup("User's Location")
-//         .openPopup();
-// });
-const markers={};
+const markers = {};
+let isFirstUpdate = true; // Flag to control initial centering
 
 socket.on("receive-location", (data) => {
-
-    const { id,latitude, longitude } = data;
+    const { id, latitude, longitude } = data;
     console.log(id);
-    
-    map.setView([latitude, longitude], map.getZoom());
-    if(markers[id])
-    {
-        markers[id].setLatLng([latitude,longitude]);
-    } else
-    {
-        markers[id]=L.marker([latitude,longitude]).addTo(map);
+
+    // On the first location update, center the map; afterward, only update the marker's position
+    if (isFirstUpdate) {
+        map.setView([latitude, longitude], 16); // Initial centering and zoom
+        isFirstUpdate = false; // Set the flag to prevent further auto-centering
     }
-    // markers[id]=L.marker([latitude,longitude]).addTo(map);
-    
+
+    if (markers[id]) {
+        markers[id].setLatLng([latitude, longitude]);
+    } else {
+        markers[id] = L.marker([latitude, longitude]).addTo(map);
+    }
 });
 
-socket.on("user-disconnected",(id)=>{
-    if(markers[id])
-    {
+socket.on("user-disconnected", (id) => {
+    if (markers[id]) {
         map.removeLayer(markers[id]);
         delete markers[id];
     }
 });
-
-console.log(markers);
-
