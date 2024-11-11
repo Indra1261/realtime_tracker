@@ -1,13 +1,12 @@
 const socket = io("realtimetracker-production.up.railway.app"); 
-console.log("hey");
+
 
 if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
         (position) => {
             const { latitude, longitude } = position.coords;
-            console.log("Location: ", latitude, longitude); // Log to check if the geolocation works
+            console.log("Location: ", latitude, longitude); 
 
-            // Emit the location to the server
             socket.emit("send-location", { latitude, longitude });
         },
         (error) => {
@@ -21,25 +20,22 @@ if (navigator.geolocation) {
     );
 }
 
-// Create the map instance
-const map = L.map("map").setView([0, 0], 16); // Assign map to a variable
+const map = L.map("map").setView([0, 0], 16); 
 
-// Add OpenStreetMap tile layer
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "indra's map"
+    attribution: "Indra's map"
 }).addTo(map);
 
 const markers = {};
-let isFirstUpdate = true; // Flag to control initial centering
+let isFirstUpdate = true; 
 
 socket.on("receive-location", (data) => {
     const { id, latitude, longitude } = data;
     console.log(id);
 
-    // On the first location update, center the map; afterward, only update the marker's position
     if (isFirstUpdate) {
-        map.setView([latitude, longitude], 16); // Initial centering and zoom
-        isFirstUpdate = false; // Set the flag to prevent further auto-centering
+        map.setView([latitude, longitude], 16); 
+        isFirstUpdate = false; 
     }
 
     if (markers[id]) {
